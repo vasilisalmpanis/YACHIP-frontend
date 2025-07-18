@@ -5,7 +5,26 @@ use sdl2::pixels::{Color, PixelFormatEnum};
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use std::time::Duration;
+
 fn main() {
+    let keymap = [
+        Keycode::X,
+        Keycode::Num1,
+        Keycode::Num2,
+        Keycode::Num3,
+        Keycode::Q,
+        Keycode::W,
+        Keycode::E,
+        Keycode::A,
+        Keycode::S,
+        Keycode::D,
+        Keycode::Z,
+        Keycode::C,
+        Keycode::Num4,
+        Keycode::R,
+        Keycode::F,
+        Keycode::V,
+    ];
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
 
@@ -36,6 +55,30 @@ fn main() {
                     Event::KeyDown { keycode: Some(Keycode::Escape), .. } => {
                         break 'running
                     },
+                Event::KeyDown { keycode, ..} => {
+                    match keycode {
+                        Some(ev) => {
+                            for (idx,key) in keymap.iter().enumerate() {
+                                if *key == ev {
+                                    chip.press_key(idx);
+                                }
+                            }
+                        },
+                        _ => {},
+                    };
+                },
+                Event::KeyUp { keycode, ..} => {
+                    match keycode {
+                        Some(ev) => {
+                            for (idx,key) in keymap.iter().enumerate() {
+                                if *key == ev {
+                                    chip.release_key(idx);
+                                }
+                            }
+                        },
+                        _ => {},
+                    };
+                },
                 _ => {}
             }
         }
