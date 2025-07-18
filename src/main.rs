@@ -1,12 +1,12 @@
 use yachip8::CHIP8;
-extern crate sdl2;
 
+extern crate sdl2;
 use sdl2::pixels::{Color, PixelFormatEnum};
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use std::time::Duration;
 
-fn main() {
+fn main() -> Result<(), String>{
     let keymap = [
         Keycode::X,
         Keycode::Num1,
@@ -25,6 +25,12 @@ fn main() {
         Keycode::F,
         Keycode::V,
     ];
+
+    let arg: Vec<String> = env::args().collect();
+    if arg.len() == 1 {
+        return Err("Please pass the filename as argument".to_string());
+    }
+
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
 
@@ -46,7 +52,7 @@ fn main() {
     canvas.present();
     let mut event_pump = sdl_context.event_pump().unwrap();
     let mut chip = CHIP8::new();
-    chip.load_rom("../YACHIP-8/roms/games/Cave.ch8");
+    chip.load_rom(arg[1].as_str());
     'running: loop {
         chip.cycle();
         for event in event_pump.poll_iter() {
@@ -95,4 +101,5 @@ fn main() {
         canvas.present();
         ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }
+    Ok(())
 }
