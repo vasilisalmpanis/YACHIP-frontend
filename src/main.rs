@@ -89,6 +89,7 @@ fn main() -> Result<(), String>{
             }
         }
 
+        chip.update_timers();
         texture.with_lock(None, |buffer: &mut [u8], _: usize|{
             for idx in 0..chip.graphics.len() {
                 buffer[idx * 4] = if chip.graphics[idx] == 1 { 0xFF } else { 0xFF};
@@ -99,7 +100,7 @@ fn main() -> Result<(), String>{
         }).unwrap();
         canvas.copy(&texture, None, None).unwrap();
         canvas.present();
-        ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
+        ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 3000));
     }
     Ok(())
 }
