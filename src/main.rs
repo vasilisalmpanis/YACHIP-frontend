@@ -34,7 +34,7 @@ fn main() -> Result<(), String>{
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
 
-    let window = video_subsystem.window("CHIP8 Emulator", 800, 600)
+    let window = video_subsystem.window("CHIP8 Emulator", 1280, 640)
         .build()
         .unwrap();
 
